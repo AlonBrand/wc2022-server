@@ -12,7 +12,9 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return {
+        'msg': "Server is running"
+    }
 
 @app.route('/sign-up', methods=['GET', 'POST'])
 def sign_up_func():
