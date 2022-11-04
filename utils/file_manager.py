@@ -1,4 +1,3 @@
-from numpy import true_divide
 from openpyxl import load_workbook
 import pandas as pd
 

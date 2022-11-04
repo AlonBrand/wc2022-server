@@ -1,7 +1,6 @@
-from flask import Flask, request, render_template, session
-from flask_cors import CORS, cross_origin
+from flask import Flask
+from flask_cors import CORS
 from numpy import number
-from openpyxl import load_workbook
 import jsonify
 from utils.file_manager import *
 
