@@ -11,10 +11,9 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
 def home():
-    return jsonify({
-        "response": "Server is running..."
-    })
-
+    return {
+        "msg": "Server is runnig..."
+    }
 # @app.route('/sign-up', methods=['GET', 'POST'])
 # def sign_up_func():
 #     user_name = request.get_json()['name']
