@@ -1,8 +1,9 @@
 import os
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 from numpy import number
 import jsonify
+import json
 from utils.file_manager import *
 
 app = Flask(__name__, static_folder="./wc2022/build/static", template_folder="./wc2022/build")
@@ -14,18 +15,19 @@ def home():
     return {
         "msg": "Server is runnig..."
     }
-# @app.route('/sign-up', methods=['GET', 'POST'])
-# def sign_up_func():
-#     user_name = request.get_json()['name']
-#     password = request.get_json()['password']
-#     return_msg = "{user_name} singed up!".format(user_name=user_name)
-#     if insert_row("users", [user_name, password]) == False:
-#         return_msg = "{user_name} Failed to singed up!".format(user_name=user_name)
+
+@app.route('/sign-up', methods=['GET', 'POST'])
+def sign_up_func():
+    user_name = request.get_json()['name']
+    password = request.get_json()['password']
+    return_msg = "{user_name} singed up!".format(user_name=user_name)
+    if insert_row("users", [user_name, password]) == False:
+        return_msg = "{user_name} Failed to singed up!".format(user_name=user_name)
     
-#     return {
-#         'user_name': user_name,
-#         'msg': return_msg
-#     }
+    return {
+        'user_name': user_name,
+        'msg': return_msg
+    }
 
 # @app.route('/log-in', methods=['GET', 'POST'])
 # def log_in_func():
@@ -48,13 +50,14 @@ def home():
 #         'msg': 'Good Luck!!!'
 #     }
 
-# @app.route('/games/get_games')
-# def get_games():
-#     games = get_table("games")
+@app.route('/users')
+def get_games():
+    print("aaa")
+    users = get_table("users")
 
-#     return {
-#         'games': json.dumps(games, default=str) 
-#     }
+    return {
+        'users': json.dumps(users, default=str) 
+    }
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
