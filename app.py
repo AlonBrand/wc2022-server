@@ -7,7 +7,7 @@ import json
 from utils.file_manager import *
 
 app = Flask(__name__, static_folder="./wc2022/build/static", template_folder="./wc2022/build")
-cors = CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
@@ -28,6 +28,23 @@ def sign_up_func():
         'user_name': user_name,
         'msg': return_msg
     }
+
+@app.route('/get-users')
+def get_users():
+    users = get_table("users")
+    print(users)
+    return {
+        'users': json.dumps(users, default=str) 
+    }
+
+    # return_msg = "{user_name} singed up!".format(user_name=user_name)
+    # if insert_row("users", [user_name, password]) == False:
+    #     return_msg = "{user_name} Failed to singed up!".format(user_name=user_name)
+    
+    # return {
+    #     'user_name': user_name,
+    #     'msg': return_msg
+    # }
 
 # @app.route('/log-in', methods=['GET', 'POST'])
 # def log_in_func():
@@ -50,14 +67,14 @@ def sign_up_func():
 #         'msg': 'Good Luck!!!'
 #     }
 
-@app.route('/users')
-def get_games():
-    print("aaa")
-    users = get_table("users")
+# @app.route('/users')
+# def get_games():
+#     print("aaa")
+#     users = get_table("users")
 
-    return {
-        'users': json.dumps(users, default=str) 
-    }
+#     return {
+#         'users': json.dumps(users, default=str) 
+#     }
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
