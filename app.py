@@ -34,7 +34,7 @@ def get_users():
     users = get_table("users")
     print(users)
     return {
-        'users': json.dumps(users, default=str) 
+        'users': users
     }
 
     # return_msg = "{user_name} singed up!".format(user_name=user_name)
