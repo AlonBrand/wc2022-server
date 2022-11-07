@@ -21,7 +21,7 @@ def sign_up_func():
     user_name = request.get_json()['name']
     password = request.get_json()['password']
     return_msg = "{user_name} singed up!".format(user_name=user_name)
-    if insert_row("users", [user_name, password]) == False:
+    if insert_row("users", [user_name, password, 0]) == False:
         return_msg = "{user_name} Failed to singed up!".format(user_name=user_name)
     
     return {
