@@ -75,7 +75,7 @@ def get_games():
     users = get_table("users")
 
     return {
-        'users': json.dumps(users, default=str) 
+        'users': users 
     }
 
 if __name__ == '__main__':
