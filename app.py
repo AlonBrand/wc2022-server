@@ -7,7 +7,7 @@ import json
 from utils.file_manager import *
 
 app = Flask(__name__, static_folder="./wc2022/build/static", template_folder="./wc2022/build")
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/')
