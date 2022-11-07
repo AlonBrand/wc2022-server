@@ -29,7 +29,7 @@ def sign_up_func():
         'msg': return_msg
     }
 
-@app.route('/log-in')
+@app.route('/log-in', methods=['GET', 'POST'])
 def log_in_func():
     user_name = request.get_json()['name']
     user_password = request.get_json()['password']    
