@@ -29,13 +29,13 @@ def sign_up_func():
         'msg': return_msg
     }
 
-@app.route('/get-users')
-def get_users():
-    users = get_table("users")
-    print(users)
-    return {
-        'users': users
-    }
+# @app.route('/users')
+# def get_users():
+#     users = get_table("users")
+#     print(users)
+#     return {
+#         'users': users
+#     }
 
     # return_msg = "{user_name} singed up!".format(user_name=user_name)
     # if insert_row("users", [user_name, password]) == False:
@@ -67,14 +67,14 @@ def get_users():
 #         'msg': 'Good Luck!!!'
 #     }
 
-# @app.route('/users')
-# def get_games():
-#     print("aaa")
-#     users = get_table("users")
+@app.route('/users')
+def get_games():
+    print("aaa")
+    users = get_table("users")
 
-#     return {
-#         'users': json.dumps(users, default=str) 
-#     }
+    return {
+        'users': json.dumps(users, default=str) 
+    }
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
