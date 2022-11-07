@@ -29,6 +29,17 @@ def sign_up_func():
         'msg': return_msg
     }
 
+@app.route('/log-in')
+def log_in_func():
+    user_name = request.get_json()['name']
+    user_password = request.get_json()['password']    
+    print(user_name)
+    print(user_password)
+    return {
+        'user_name': user_name,
+        'msg': search_in_table("users", user_name=user_name, user_password=user_password)
+    }
+
 # @app.route('/users')
 # def get_users():
 #     users = get_table("users")
@@ -46,16 +57,7 @@ def sign_up_func():
     #     'msg': return_msg
     # }
 
-# @app.route('/log-in', methods=['GET', 'POST'])
-# def log_in_func():
-#     user_name = request.get_json()['name']
-#     user_password = request.get_json()['password']    
-#     print(user_name)
-#     print(user_password)
-#     return {
-#         'user_name': user_name,
-#         'msg': search_in_table("users", user_name=user_name, user_password=user_password)
-#     }
+
 
 # @app.route('/games/bet-on-game', methods=['GET', 'POST'])
 # def bet_on_game():
