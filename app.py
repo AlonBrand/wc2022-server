@@ -5,6 +5,9 @@ from numpy import number
 import jsonify
 import json
 from utils.file_manager import *
+import sqlite3
+
+currentdirectory = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__, static_folder="./wc2022/build/static", template_folder="./wc2022/build")
 cors = CORS(app)
@@ -21,9 +24,23 @@ def sign_up_func():
     user_name = request.get_json()['name']
     password = request.get_json()['password']
     return_msg = "{user_name} singed up!".format(user_name=user_name)
-    if insert_row("users", [user_name, password, 0]) == False:
-        return_msg = "{user_name} Failed to singed up!".format(user_name=user_name)
-    
+
+    try:
+        connection = sqlite3.connect(currentdirectory + "\db.db")
+        curser = connection.cursor()
+
+        params = (user_name, password, 0)
+        query = "INSERT INTO Users (name, password, points) VALUES (?, ?, ?)"
+        db_reponse = curser.execute(query, params)
+        connection.commit()
+        connection.close()
+    except Exception as e:
+        print(e)
+        return {
+            'user_name': 'fake',
+            'msg': str(e)
+        }
+     
     return {
         'user_name': user_name,
         'msg': return_msg
@@ -71,11 +88,22 @@ def log_in_func():
 
 @app.route('/users')
 def get_games():
-    print("aaa")
-    users = get_table("users")
+    # users = get_table("users")
+    try:
+        connection = sqlite3.connect(currentdirectory + "\db.db")
+        curser = connection.cursor()
+
+        curser.execute("SELECT * FROM Users")
+        users = curser.fetchall()
+        connection.commit()
+        connection.close()
+    except Exception as e:
+        return {
+            'msg': e
+        }
 
     return {
-        'users': users 
+        'users': users
     }
 
 if __name__ == '__main__':
