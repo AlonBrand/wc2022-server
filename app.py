@@ -82,7 +82,7 @@ def sign_up_func():
      
     return {
         'user_name': user_name,
-        'msg': 'aa',
+        'msg': 'User Connected',
         'user_id': user_id
     }
 
@@ -97,8 +97,8 @@ def log_in_func():
         curser.execute(query, (user_name, user_password))
 
         response = curser.fetchone()
-        id, name, password, points = response
-        print(id)
+        if len(response) > 0:
+            id, name, password, points = response
 
         connection.commit()
         # connection.close()
@@ -106,8 +106,8 @@ def log_in_func():
     except Exception as e:
         print(e)
         return {
-            'user_name': 'fake',
-            'msg': str(e)
+            'msg': 'Wrong user name or password!',
+            'user_name': user_name,
         }
 
     return {
@@ -136,33 +136,55 @@ def log_in_func():
 
 @app.route('/games/bet-on-game', methods=['GET', 'POST'])
 def bet_on_game():
+    print(request.get_json())
+    game_id = request.get_json()['gameId']
+    user_id = request.get_json()['userId']
+    scoreA = request.get_json()['scoreA']
+    scoreB = request.get_json()['scoreB']
+    query = ''
+    bet_id = None
     try:
-        params = (request.get_json()['gameId'], request.get_json()['userId'], request.get_json()['teamA'], request.get_json()['teamB'], request.get_json()['scoreA'], request.get_json()['scoreB'])
-        query = "INSERT INTO Bets (gameId, userId, teamA, teamB, scoreA, scoreB) VALUES (?, ?, ?, ?, ?, ?)"
-        connection = sqlite3.connect(db_url + "\db.db")
+        print(scoreA, scoreB)
+        connection = connect_to_db()
         curser = connection.cursor()
+        
+        curser.execute("SELECT * FROM Bets WHERE (userId = %s AND gameId = %s)", (user_id, game_id))
+        bets = curser.fetchall()
+        if len(bets) > 0 and len(bets[0]) > 0:
+            bet_id = bets[0][0]
+
+        print(bet_id)
+
+        if bet_id is not None:
+            query = "UPDATE Bets SET scoreA=%s, scoreB=%s WHERE betId = %s"
+            params = (scoreA, scoreB, bet_id)
+        else:
+            query = "INSERT INTO Bets (userId, gameId, scoreA, scoreB) VALUES (%s, %s, %s, %s)"
+            params = (user_id, game_id, scoreA, scoreB)
+
         curser.execute(query, params)
         connection.commit()
-        connection.close()
-        return {
-            'msg': 'Good Luck!!!'
-        }
+        # connection.close()
+
     except Exception as e:
         print(e)
         return {
+            'user_name': 'fake',
             'msg': str(e)
         }
+
+    return {
+        'msg': 'Nice Bet!'
+    }
+
 
 @app.route('/users')
 def get_games():
     try:
-        connection = sqlite3.connect(db_url + "\db.db")
+        connection = connect_to_db()
         curser = connection.cursor()
-
         curser.execute("SELECT * FROM Users")
         users = curser.fetchall()
-        connection.commit()
-        connection.close()
     except Exception as e:
         return {
             'msg': e
