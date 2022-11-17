@@ -287,7 +287,7 @@ def get_user_bets(user_id):
         'userBets': bets
     }
 
-@app.route('/get-side-bets/<user_id>')
+@app.route('/get-side-bets/<user_id>') 
 def get_user_side_bets(user_id):
     print(user_id)
     try:
