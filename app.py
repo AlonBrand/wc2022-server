@@ -177,6 +177,23 @@ def bet_on_game():
         'msg': 'Nice Bet!'
     }
 
+@app.route('/side-bets', methods=['GET', 'POST'])
+def side_bets():
+    print(request.get_json())
+    # try:
+    #     connection = connect_to_db()
+    #     curser = connection.cursor()
+    #     curser.execute("SELECT * FROM Users")
+    #     users = curser.fetchall()
+    # except Exception as e:
+    #     return {
+    #         'msg': e
+    #     }
+
+    return {
+        'users': 'Server recieved your bets, good luck! '
+    }
+
 
 @app.route('/users')
 def get_games():
