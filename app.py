@@ -229,6 +229,23 @@ def get_games():
         'users': users
     }
 
+@app.route('/userBets/<user_id>')
+def get_user_bets(user_id):
+    try:
+        connection = connect_to_db()
+        curser = connection.cursor()
+        curser.execute("SELECT * FROM Bets WHERE userId=%s", (user_id,))
+        bets = curser.fetchall()
+        print(bets)
+    except Exception as e:
+        return {
+            'msg': e
+        }
+
+    return {
+        'userBets': bets
+    }
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
