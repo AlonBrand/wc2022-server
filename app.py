@@ -179,16 +179,34 @@ def bet_on_game():
 
 @app.route('/side-bets', methods=['GET', 'POST'])
 def side_bets():
-    print(request.get_json())
-    # try:
-    #     connection = connect_to_db()
-    #     curser = connection.cursor()
-    #     curser.execute("SELECT * FROM Users")
-    #     users = curser.fetchall()
-    # except Exception as e:
-    #     return {
-    #         'msg': e
-    #     }
+    user_id = request.get_json()['userId']
+    top_scorer = request.get_json()['topScorer']
+    winning_team = request.get_json()['winningTeam']
+    query = ''
+    bet_id = None
+    try:
+        connection = connect_to_db()
+        curser = connection.cursor()
+
+        curser.execute("SELECT * FROM SideBets WHERE userId=%s", (user_id,))
+        bets = curser.fetchall()
+
+        if len(bets) > 0 and len(bets[0]) > 0:
+            bet_id = bets[0][0]
+
+        if bet_id is not None:
+            query = "UPDATE SideBets SET team=%s, player=%s WHERE id=%s"
+            params = (winning_team, top_scorer, bet_id)
+        else:
+            query = "INSERT INTO SideBets (userId, team, player) VALUES (%s, %s, %s)"
+            params = (user_id, winning_team, top_scorer)
+
+        curser.execute(query, params)
+        connection.commit()
+    except Exception as e:
+        return {
+            'msg': str(e)
+        }
 
     return {
         'users': 'Server recieved your bets, good luck! '
