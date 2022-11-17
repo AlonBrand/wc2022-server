@@ -5,6 +5,7 @@ from numpy import number
 import jsonify
 import json
 from utils.file_manager import *
+from utils.utils import *
 import sqlite3
 import threading
 import requests
@@ -170,6 +171,46 @@ def bet_on_game():
         print(e)
         return {
             'user_name': 'fake',
+            'msg': str(e)
+        }
+
+    return {
+        'msg': 'Nice Bet!'
+    }
+
+
+@app.route('/games/bet-real-score', methods=['GET', 'POST'])
+def bet_real_score():
+    game_id = request.get_json()['gameId']
+    scoreA = request.get_json()['scoreA']
+    scoreB = request.get_json()['scoreB']
+    teamA = request.get_json()['teamA']
+    teamB = request.get_json()['teamB']
+    query = ''
+    try:
+        connection = connect_to_db()
+        curser = connection.cursor()
+        
+        curser.execute("SELECT * FROM Games WHERE gameId = %s", (game_id, ))
+        games = curser.fetchall()
+
+        if len(games) > 0:
+            query = "UPDATE Games SET scoreA=%s, scoreB=%s WHERE gameId = %s"
+            params = (scoreA, scoreB, game_id)
+        else:
+            query = "INSERT INTO Games (gameId, teamA, teamB, scoreA, scoreB, status) VALUES (%s, %s, %s, %s, %s, %s)"
+            params = (game_id, teamA, teamB, scoreA, scoreB, "FINISHED")
+
+        curser.execute(query, params)
+        connection.commit()
+
+        calculate_score()
+
+        # connection.close()
+
+    except Exception as e:
+        print(e)
+        return {
             'msg': str(e)
         }
 
