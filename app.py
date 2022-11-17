@@ -287,6 +287,25 @@ def get_user_bets(user_id):
         'userBets': bets
     }
 
+@app.route('/get-side-bets/<user_id>')
+def get_user_side_bets(user_id):
+    print(user_id)
+    try:
+        connection = connect_to_db()
+        curser = connection.cursor()
+        curser.execute("SELECT * FROM SideBets WHERE userId=%s", (user_id,))
+        side_bets = curser.fetchall()[0]
+        print(side_bets)
+    except Exception as e:
+        return {
+            'msg': e 
+        }
+
+    return {
+        'winningTeam': side_bets[2],
+        'topScorer': side_bets[3]
+    }
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
