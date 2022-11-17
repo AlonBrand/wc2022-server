@@ -280,7 +280,7 @@ def get_user_bets(user_id):
         print(bets)
     except Exception as e:
         return {
-            'msg': e
+            'msg': e 
         }
 
     return {
