@@ -295,15 +295,14 @@ def get_user_side_bets(user_id):
         connection = connect_to_db()
         curser = connection.cursor()
         curser.execute("SELECT * FROM SideBets WHERE userId=%s", (user_id,))
-        if len(curser.fetchall()) > 0:
-            side_bets = curser.fetchall()[0]
-        print(side_bets)
+        # if len(curser.fetchall()) > 0:
+        side_bets = curser.fetchall()[0]
     except Exception as e:
         return {
             'msg': e 
         }
 
-    if side_bets is not None and len(side_bets > 2):
+    if side_bets is not None and len(side_bets) > 2:
         return {
             'winningTeam': side_bets[2],
             'topScorer': side_bets[3]
