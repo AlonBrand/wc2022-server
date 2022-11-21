@@ -312,6 +312,32 @@ def get_user_side_bets(user_id):
             'msg': 'No side bets!' 
         }
 
+@app.route('/get-bets/<game_id>') 
+def get_bets(game_id):
+    try:
+        connection = connect_to_db()
+        
+        curser = connection.cursor()
+        curser.execute("SELECT * FROM Bets WHERE gameId=%s", (game_id,))
+        game_bets = curser.fetchall()
+    except Exception as e:
+        return {
+            'msg': e 
+        }
+    return {
+        'game_bets': game_bets
+    }
+
+    # if side_bets is not None and len(side_bets) > 2:
+    #     return {
+    #         'winningTeam': side_bets[2],
+    #         'topScorer': side_bets[3]
+    #     }
+    # else:
+    #     return {
+    #         'msg': 'No side bets!' 
+    #     }
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
