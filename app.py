@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, session
+from flask import Flask, request, redirect
 from flask_cors import CORS
 from numpy import number
 import jsonify
@@ -337,6 +337,10 @@ def get_bets(game_id):
     #     return {
     #         'msg': 'No side bets!' 
     #     }
+
+@app.route('/games')
+def games():
+    return redirect('/')
 
 
 if __name__ == '__main__':
