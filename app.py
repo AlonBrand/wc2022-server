@@ -277,14 +277,16 @@ def get_user_bets(user_id):
         curser = connection.cursor()
         curser.execute("SELECT * FROM Bets WHERE userId=%s", (user_id,))
         bets = curser.fetchall()
-        print(bets)
+        curser.execute("SELECT * FROM Games")
+        games = curser.fetchall()
     except Exception as e:
         return {
             'msg': e 
         }
 
     return {
-        'userBets': bets
+        'userBets': bets,
+        'games': games
     }
 
 @app.route('/get-side-bets/<user_id>') 
