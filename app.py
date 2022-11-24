@@ -340,7 +340,9 @@ def get_bets(game_id):
 
 @app.route('/games')
 def games():
-    return redirect('/')
+    return {
+        "msg": "refresh games!"
+    }
 
 
 if __name__ == '__main__':
