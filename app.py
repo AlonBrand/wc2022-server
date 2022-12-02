@@ -330,28 +330,11 @@ def get_bets(game_id):
         'game_bets': game_bets
     }
 
-    # if side_bets is not None and len(side_bets) > 2:
-    #     return {
-    #         'winningTeam': side_bets[2],
-    #         'topScorer': side_bets[3]
-    #     }
-    # else:
-    #     return {
-    #         'msg': 'No side bets!' 
-    #     }
-
 @app.route('/games')
 def games():
     return {
         "msg": "refresh games!"
     }
-
-@app.route('/test')
-def test_route():
-    return {
-        "msg": "test route!"
-    }
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)

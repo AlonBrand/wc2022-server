@@ -59,13 +59,13 @@ def calculate_score():
 
 def calculate_game_points(game_realA, game_realB, user_scoreA, user_scoreB):
     if game_realA == user_scoreA and game_realB == user_scoreB:
-        return 3
+        return 4
     elif game_realA > game_realB and user_scoreA > user_scoreB:
-        return 1
+        return 2
     elif game_realB > game_realA and user_scoreB > user_scoreA:
-        return 1
+        return 2
     elif game_realA == game_realB and user_scoreA == user_scoreB:
-        return 1
+        return 2
 
     return 0
 
