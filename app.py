@@ -186,6 +186,7 @@ def bet_real_score():
     scoreB = request.get_json()['scoreB']
     teamA = request.get_json()['teamA']
     teamB = request.get_json()['teamB']
+    status = request.get_json()['status']
     query = ''
     try:
         connection = connect_to_db()
@@ -199,7 +200,7 @@ def bet_real_score():
             params = (scoreA, scoreB, game_id)
         else:
             query = "INSERT INTO Games (gameId, teamA, teamB, scoreA, scoreB, status) VALUES (%s, %s, %s, %s, %s, %s)"
-            params = (game_id, teamA, teamB, scoreA, scoreB, "FINISHED")
+            params = (game_id, teamA, teamB, scoreA, scoreB, status)
 
         curser.execute(query, params)
         connection.commit()
