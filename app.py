@@ -254,6 +254,36 @@ def side_bets():
         'users': 'Server recieved your bets, good luck! '
     }
 
+@app.route('/get-side-bets', methods=['GET', 'POST'])
+def get_side_bets():
+    try:
+        connection = connect_to_db()
+        curser = connection.cursor()
+
+        curser.execute("SELECT * FROM SideBets")
+        side_bets = curser.fetchall()
+
+        # if len(bets) > 0 and len(bets[0]) > 0:
+        #     bet_id = bets[0][0]
+
+        # if bet_id is not None:
+        #     query = "UPDATE SideBets SET team=%s, player=%s WHERE id=%s"
+        #     params = (winning_team, top_scorer, bet_id)
+        # else:
+        #     query = "INSERT INTO SideBets (userId, team, player) VALUES (%s, %s, %s)"
+        #     params = (user_id, winning_team, top_scorer)
+
+        # curser.execute(query)
+        # connection.commit()
+    except Exception as e:
+        return {
+            'msg': str(e)
+        }
+
+    return {
+        'side_bets': side_bets
+    }
+
 
 @app.route('/users')
 def get_games():
