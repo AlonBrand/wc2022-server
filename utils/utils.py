@@ -60,7 +60,7 @@ def calculate_score():
 def calculate_game_points(game_realA, game_realB, user_scoreA, user_scoreB, game_status):
     bull_point = 3
     part_point = 1
-    if game_status == 'Eighth':
+    if game_status == 'Eighth' or game_status == 'Quarter':
         bull_point = 4
         part_point = 2
 
