@@ -63,9 +63,12 @@ def calculate_game_points(game_realA, game_realB, user_scoreA, user_scoreB, game
     if game_status == 'Eighth' or game_status == 'Quarter':
         bull_point = 4
         part_point = 2
-    elif game_status == 'Semi':
+    elif game_status == 'Semi' or game_status == 'Shitty':
         bull_point = 5
         part_point = 2
+    elif game_status == 'Final':
+        bull_point = 5
+        part_point = 3
 
     if game_realA == user_scoreA and game_realB == user_scoreB:
         return bull_point
